@@ -1,5 +1,6 @@
 using icloud_calendar_api.Data;
 using icloud_calendar_api.Features.Auth;
+using icloud_calendar_api.Features.Encryption;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddAuthentication(ApiKeyAuthenticationDefaults.SchemeName)
     .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationDefaults.SchemeName, options => { });
+
+builder.Services.AddSingleton<IPasswordEncryptionService, AesGcmPasswordEncryptionService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

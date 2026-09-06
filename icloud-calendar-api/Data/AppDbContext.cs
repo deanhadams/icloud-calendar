@@ -1,5 +1,6 @@
 using icloud_calendar_api.Features.ApiKeys;
 using icloud_calendar_api.Features.Clients;
+using icloud_calendar_api.Features.EndUsers;
 using Microsoft.EntityFrameworkCore;
 
 namespace icloud_calendar_api.Data;
@@ -12,6 +13,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Client> Clients => Set<Client>();
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
+    public DbSet<EndUser> EndUsers => Set<EndUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +31,17 @@ public class AppDbContext : DbContext
             entity.HasIndex(e => e.KeyHash).IsUnique();
             entity.HasOne(e => e.Client)
                 .WithMany(c => c.ApiKeys)
+                .HasForeignKey(e => e.ClientId);
+        });
+
+        modelBuilder.Entity<EndUser>(entity =>
+        {
+            entity.Property(e => e.Status).HasDefaultValue("connected");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("now()");
+            entity.Property(e => e.EndUserIdentifier).HasDefaultValueSql("gen_random_uuid()");
+            entity.HasIndex(e => e.EndUserIdentifier).IsUnique();
+            entity.HasOne(e => e.Client)
+                .WithMany(c => c.EndUsers)
                 .HasForeignKey(e => e.ClientId);
         });
     }

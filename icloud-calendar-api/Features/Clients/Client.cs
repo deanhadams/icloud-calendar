@@ -1,4 +1,5 @@
 using icloud_calendar_api.Features.ApiKeys;
+using icloud_calendar_api.Features.EndUsers;
 
 namespace icloud_calendar_api.Features.Clients;
 
@@ -10,4 +11,5 @@ public class Client
     public DateTimeOffset CreatedAt { get; set; }
 
     public ICollection<ApiKey> ApiKeys { get; set; } = new List<ApiKey>();
+    public ICollection<EndUser> EndUsers { get; set; } = new List<EndUser>();
 }
