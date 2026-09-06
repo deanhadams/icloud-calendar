@@ -11,7 +11,7 @@ const END_USER_ENDPOINTS: EndpointDoc[] = [
   {
     method: 'POST',
     path: '/v1/users',
-    description: "Register a new end-user (connects their iCloud account).",
+    description: 'Register a new calendar (connects an iCloud account).',
     requestBody: [
       { name: 'icloudEmail', type: 'string', required: true },
       { name: 'appSpecificPassword', type: 'string', required: true },
@@ -22,7 +22,7 @@ const END_USER_ENDPOINTS: EndpointDoc[] = [
   {
     method: 'GET',
     path: '/v1/users/{userId}',
-    description: "Get an end-user's connection status.",
+    description: "Get a calendar's connection status.",
     response: JSON.stringify(
       {
         userId: EXAMPLE_USER_ID,
@@ -37,7 +37,7 @@ const END_USER_ENDPOINTS: EndpointDoc[] = [
   {
     method: 'PATCH',
     path: '/v1/users/{userId}/credentials',
-    description: "Update an end-user's app-specific password (e.g. after reconnecting).",
+    description: "Update a calendar's app-specific password (e.g. after reconnecting).",
     requestBody: [{ name: 'appSpecificPassword', type: 'string', required: true }],
     response: JSON.stringify({ userId: EXAMPLE_USER_ID, status: 'connected' }, null, 2),
   },
@@ -130,7 +130,7 @@ export function Endpoints() {
 
       <section className="overflow-hidden rounded-md border border-line bg-white">
         <div className="border-b border-line bg-cobalt-tint px-6 py-4">
-          <h1 className="text-lg font-semibold text-ink">End Users</h1>
+          <h1 className="text-lg font-semibold text-ink">Calendars</h1>
         </div>
         <div>
           {END_USER_ENDPOINTS.map((endpoint) => (

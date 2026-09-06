@@ -79,7 +79,7 @@ export function Playground() {
         setErrorState({
           kind: 'reconnect',
           message:
-            'This end user needs to reconnect their iCloud account. Ask them to generate a fresh app-specific password and update it before retrying.',
+            'This calendar needs to be reconnected to iCloud. Generate a fresh app-specific password and update it before retrying.',
         })
       } else {
         setErrorState({
@@ -104,7 +104,7 @@ export function Playground() {
             <p className="text-sm text-ink-muted">Loading…</p>
           ) : endUsers.length === 0 ? (
             <p className="text-sm text-ink-muted">
-              You don't have any end users yet.{' '}
+              You don't have any calendars yet.{' '}
               <Link to="/dashboard/end-users" className="font-medium text-cobalt hover:text-cobalt-hover">
                 Add one first
               </Link>{' '}
@@ -114,7 +114,7 @@ export function Playground() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="endUser" className="text-sm font-medium text-ink">
-                  End user
+                  Select a calendar
                 </label>
                 <select
                   id="endUser"

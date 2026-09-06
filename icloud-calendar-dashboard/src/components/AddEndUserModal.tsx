@@ -36,14 +36,14 @@ export function AddEndUserModal({
       })
       onSuccess(created)
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Failed to add end user. Please try again.')
+      setError(err instanceof ApiError ? err.message : 'Failed to add calendar. Please try again.')
     } finally {
       setSubmitting(false)
     }
   }
 
   return (
-    <Modal title="Add End User" onClose={onClose}>
+    <Modal title="Add Calendar" onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label htmlFor="icloudEmail" className="text-sm font-medium text-ink">
@@ -106,7 +106,7 @@ export function AddEndUserModal({
         {error && <p className="text-sm text-red-600">{error}</p>}
 
         <Button type="submit" variant="primary" disabled={submitting} className="w-full">
-          {submitting ? 'Adding…' : 'Add End User'}
+          {submitting ? 'Adding…' : 'Add Calendar'}
         </Button>
       </form>
     </Modal>

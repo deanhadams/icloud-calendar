@@ -24,7 +24,7 @@ export function EndUsers() {
         const data = await api.getEndUsers()
         if (!cancelled) setEndUsers(data)
       } catch {
-        if (!cancelled) setError('Failed to load end users.')
+        if (!cancelled) setError('Failed to load calendars.')
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -39,7 +39,7 @@ export function EndUsers() {
 
   const handleAddSuccess = () => {
     setIsAddOpen(false)
-    setSuccessMessage('End user added — you can now create calendar events for them via the API')
+    setSuccessMessage('Calendar added — you can now create events for it via the API')
     setRefreshToken((n) => n + 1)
     setTimeout(() => setSuccessMessage(null), 5000)
   }
@@ -50,7 +50,7 @@ export function EndUsers() {
     <section className="overflow-hidden rounded-md border border-line bg-white">
       <div className="flex items-center justify-between border-b border-line bg-cobalt-tint px-6 py-4">
         <div className="flex items-center gap-2">
-          <h1 className="text-lg font-semibold text-ink">End Users</h1>
+          <h1 className="text-lg font-semibold text-ink">Calendars</h1>
           {!loading && (
             <span className="inline-flex items-center gap-1 rounded-full border border-cobalt/20 bg-cobalt-tint px-2.5 py-0.5 text-xs font-medium text-cobalt">
               <span className="font-mono">{connectedCount}</span> connected
@@ -58,7 +58,7 @@ export function EndUsers() {
           )}
         </div>
         <Button variant="primary" onClick={() => setIsAddOpen(true)}>
-          Add End User
+          Add Calendar
         </Button>
       </div>
 
@@ -76,10 +76,10 @@ export function EndUsers() {
           ) : endUsers.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-12 text-center">
               <p className="text-sm text-ink-muted">
-                Add your first end user to start syncing their iCloud calendar.
+                Add your first calendar to start syncing events.
               </p>
               <Button variant="primary" onClick={() => setIsAddOpen(true)}>
-                Add End User
+                Add Calendar
               </Button>
             </div>
           ) : (

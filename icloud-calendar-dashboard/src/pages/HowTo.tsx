@@ -119,12 +119,12 @@ export function HowTo() {
 
             {!loadingEndUsers && !firstEndUser && (
               <p className="mt-2 text-sm text-ink-muted">
-                Add an end-user first to see this personalized with a real ID.{' '}
+                Add a calendar first to see this personalized with a real ID.{' '}
                 <Link
                   to="/dashboard/end-users"
                   className="font-medium text-cobalt hover:text-cobalt-hover"
                 >
-                  Add an end user
+                  Add a calendar
                 </Link>
               </p>
             )}
@@ -175,7 +175,7 @@ export function HowTo() {
             Try it live in the Playground
           </Link>
           <Link to="/dashboard/end-users" className="text-sm font-medium text-cobalt hover:text-cobalt-hover">
-            See your End Users
+            See your Calendars
           </Link>
         </div>
       </section>

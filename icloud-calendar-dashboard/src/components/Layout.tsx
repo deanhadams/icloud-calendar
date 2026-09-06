@@ -26,7 +26,7 @@ export function Layout({ children }: { children: ReactNode }) {
             Dashboard
           </NavLink>
           <NavLink to="/dashboard/end-users" className={navLinkClass}>
-            End Users
+            Calendars
           </NavLink>
           <NavLink to="/dashboard/playground" className={navLinkClass}>
             Playground
