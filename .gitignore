@@ -8,3 +8,5 @@
 *.user
 /icloud-calendar-api/appsettings.Development.json
 /icloud-calendar-api/Properties
+/icloud-calendar-dashboard/.env.example
+/icloud-calendar-dashboard/.env.example
