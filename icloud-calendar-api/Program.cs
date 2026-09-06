@@ -20,6 +20,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add CORS to allow connections from http://localhost:5173/
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+
 // "ApiKey" stays the default scheme (used by every [Authorize] under /v1 that doesn't
 // name a scheme explicitly — Ping/EndUsers/Events). "AdminKey" and "DashboardJwt" are
 // registered alongside it but are never selected implicitly — only an [Authorize] that
@@ -102,6 +114,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowLocalFrontend");
 
 app.UseAuthentication();
 app.UseMiddleware<RateLimitingMiddleware>();
