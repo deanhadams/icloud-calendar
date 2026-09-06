@@ -1,0 +1,6 @@
+@icloud_calendar_api_HostAddress = http://localhost:5055
+
+GET {{icloud_calendar_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
