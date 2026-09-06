@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
+import { useSignInModal } from '../context/useSignInModal'
 import { ApiError, createApiKey, getApiKeys, getEndUsers, getMe, revokeApiKey } from './client'
 
 export function useApi() {
   const { token, signOut } = useAuth()
+  const { open: openSignInModal } = useSignInModal()
   const navigate = useNavigate()
 
   const withAuth = useCallback(
@@ -17,12 +19,13 @@ export function useApi() {
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
           signOut()
-          navigate('/login', { replace: true })
+          navigate('/', { replace: true })
+          openSignInModal()
         }
         throw error
       }
     },
-    [token, signOut, navigate],
+    [token, signOut, navigate, openSignInModal],
   )
 
   return useMemo(

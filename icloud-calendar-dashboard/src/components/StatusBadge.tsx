@@ -1,18 +1,32 @@
 const STATUS_STYLES: Record<string, string> = {
-  active: 'bg-green-100 text-green-800',
-  connected: 'bg-green-100 text-green-800',
-  revoked: 'bg-slate-200 text-slate-600',
-  needs_reconnect: 'bg-orange-100 text-orange-800',
+  active: 'bg-signal-green-bg text-signal-green',
+  connected: 'bg-signal-green-bg text-signal-green',
+  revoked: 'bg-ink/5 text-ink-muted',
+  needs_reconnect: 'bg-signal-amber-bg text-signal-amber',
 }
 
-const DEFAULT_STYLE = 'bg-slate-100 text-slate-700'
+const STATUS_LABELS: Record<string, string> = {
+  active: 'Active',
+  connected: 'Connected',
+  revoked: 'Revoked',
+  needs_reconnect: 'Needs reconnect',
+}
+
+const DEFAULT_STYLE = 'bg-ink/5 text-ink-muted'
+
+function sentenceCase(status: string): string {
+  const withSpaces = status.replace(/_/g, ' ')
+  return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1)
+}
 
 export function StatusBadge({ status }: { status: string }) {
   const style = STATUS_STYLES[status] ?? DEFAULT_STYLE
-  const label = status.replace(/_/g, ' ')
+  const label = STATUS_LABELS[status] ?? sentenceCase(status)
 
   return (
-    <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${style}`}>
+    <span
+      className={`inline-block rounded-full px-2.5 py-0.5 font-mono text-xs font-medium ${style}`}
+    >
       {label}
     </span>
   )

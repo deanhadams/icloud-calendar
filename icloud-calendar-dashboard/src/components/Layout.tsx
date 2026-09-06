@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 
-const tabClasses = ({ isActive }: { isActive: boolean }) =>
-  `rounded-md px-3 py-2 text-sm font-medium ${
-    isActive ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  `block border-l-2 px-4 py-2.5 text-sm font-medium transition-colors ${
+    isActive ? 'border-cobalt text-paper' : 'border-transparent text-paper/50 hover:text-paper/80'
   }`
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -13,32 +13,38 @@ export function Layout({ children }: { children: ReactNode }) {
 
   const handleSignOut = () => {
     signOut()
-    navigate('/login', { replace: true })
+    navigate('/', { replace: true })
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <span className="font-semibold text-slate-900">{client?.name ?? 'Dashboard'}</span>
+    <div className="flex min-h-screen bg-paper">
+      <aside className="flex w-60 shrink-0 flex-col bg-ink px-5 py-6">
+        <p className="truncate text-base font-semibold text-paper">{client?.name ?? 'Dashboard'}</p>
+
+        <nav className="mt-8 flex flex-col gap-1">
+          <NavLink to="/dashboard" end className={navLinkClass}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/dashboard/end-users" className={navLinkClass}>
+            End Users
+          </NavLink>
+        </nav>
+
+        <div className="mt-auto border-t border-white/10 pt-4">
+          <p className="truncate font-mono text-xs text-paper/50">{client?.email}</p>
           <button
             type="button"
             onClick={handleSignOut}
-            className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            className="mt-3 text-xs font-medium text-paper/60 transition-colors hover:text-paper"
           >
             Sign out
           </button>
         </div>
-        <nav className="mx-auto flex max-w-5xl gap-2 px-4 pb-3">
-          <NavLink to="/dashboard" end className={tabClasses}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/dashboard/end-users" className={tabClasses}>
-            End Users
-          </NavLink>
-        </nav>
-      </header>
-      <main className="mx-auto max-w-5xl px-4 py-6">{children}</main>
+      </aside>
+
+      <main className="bg-grid flex-1 px-10 py-10">
+        <div className="max-w-3xl">{children}</div>
+      </main>
     </div>
   )
 }

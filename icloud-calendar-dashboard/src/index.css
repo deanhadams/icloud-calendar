@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #e7e9f2;
+  --color-ink: #14171f;
+  --color-ink-deep: #0b0d12;
+  --color-ink-muted: #5b6170;
+  --color-line: #d8dbe3;
+  --color-cobalt: #2e4bdb;
+  --color-cobalt-hover: #2540b8;
+  --color-cobalt-tint: #eef1fc;
+  --color-violet: #7c5cfc;
+  --color-signal-green: #16a34a;
+  --color-signal-green-bg: #dcfce7;
+  --color-signal-amber: #ca8a04;
+  --color-signal-amber-bg: #fef3c7;
+
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
 :root {
   color-scheme: light;
   font-synthesis: none;
@@ -10,4 +29,49 @@
 
 body {
   margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* A faint calendar-grid texture for the main content backdrop. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(20, 23, 31, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 23, 31, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Same texture, inverted for the dark login backdrop. */
+.bg-grid-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Contained cobalt/violet glow behind the hero headline — not a full-bleed wash. */
+.hero-glow {
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(124, 92, 252, 0.4) 0%,
+    rgba(46, 75, 219, 0.32) 45%,
+    transparent 72%
+  );
+  filter: blur(70px);
+}
+
+@keyframes key-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-key-reveal {
+  animation: key-reveal 180ms ease-out;
 }

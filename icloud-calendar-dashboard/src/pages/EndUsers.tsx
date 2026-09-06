@@ -33,38 +33,42 @@ export function EndUsers() {
   }, [])
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6">
-      <h1 className="text-lg font-semibold text-slate-900">End Users</h1>
+    <section className="overflow-hidden rounded-md border border-line bg-white">
+      <div className="border-b border-line bg-cobalt-tint px-6 py-4">
+        <h1 className="text-lg font-semibold text-ink">End Users</h1>
+      </div>
 
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      <div className="p-6">
+        {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
 
-      <div className="mt-4 overflow-x-auto">
-        {loading ? (
-          <p className="text-sm text-slate-500">Loading…</p>
-        ) : endUsers.length === 0 ? (
-          <p className="text-sm text-slate-500">No end users yet.</p>
-        ) : (
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 text-slate-500">
-                <th className="py-2 pr-4 font-medium">Email</th>
-                <th className="py-2 pr-4 font-medium">Calendar</th>
-                <th className="py-2 pr-4 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {endUsers.map((user) => (
-                <tr key={user.userId} className="border-b border-slate-100 last:border-0">
-                  <td className="py-2 pr-4 text-slate-900">{user.icloudEmail}</td>
-                  <td className="py-2 pr-4 text-slate-900">{user.calendarName}</td>
-                  <td className="py-2 pr-4">
-                    <StatusBadge status={user.status} />
-                  </td>
+        <div className="overflow-x-auto">
+          {loading ? (
+            <p className="text-sm text-ink-muted">Loading…</p>
+          ) : endUsers.length === 0 ? (
+            <p className="text-sm text-ink-muted">No end users yet.</p>
+          ) : (
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-line text-ink-muted">
+                  <th className="py-2 pr-4 text-xs font-medium">Email</th>
+                  <th className="py-2 pr-4 text-xs font-medium">Calendar</th>
+                  <th className="py-2 pr-4 text-xs font-medium">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {endUsers.map((user) => (
+                  <tr key={user.userId} className="border-b border-line last:border-0">
+                    <td className="py-3 pr-4 font-mono text-ink">{user.icloudEmail}</td>
+                    <td className="py-3 pr-4 font-mono text-ink">{user.calendarName}</td>
+                    <td className="py-3 pr-4">
+                      <StatusBadge status={user.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </section>
   )
