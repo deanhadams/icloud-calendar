@@ -3,6 +3,7 @@ using icloud_calendar_api.Data;
 using icloud_calendar_api.Features.Auth;
 using icloud_calendar_api.Features.Calendar;
 using icloud_calendar_api.Features.Encryption;
+using icloud_calendar_api.Features.EndUsers;
 using icloud_calendar_api.Features.RateLimiting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,6 +67,7 @@ builder.Services.AddAuthentication(ApiKeyAuthenticationDefaults.SchemeName)
     });
 
 builder.Services.AddSingleton<IPasswordEncryptionService, AesGcmPasswordEncryptionService>();
+builder.Services.AddScoped<EndUserCreationService>();
 
 builder.Services.Configure<ICloudDavSettings>(builder.Configuration.GetSection("ICloudDav"));
 builder.Services.AddHttpClient("ICloudCalDav");

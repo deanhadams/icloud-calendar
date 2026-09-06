@@ -16,11 +16,13 @@ public class EndUsersController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly IPasswordEncryptionService _encryptionService;
+    private readonly EndUserCreationService _creationService;
 
-    public EndUsersController(AppDbContext dbContext, IPasswordEncryptionService encryptionService)
+    public EndUsersController(AppDbContext dbContext, IPasswordEncryptionService encryptionService, EndUserCreationService creationService)
     {
         _dbContext = dbContext;
         _encryptionService = encryptionService;
+        _creationService = creationService;
     }
 
     public record CreateEndUserRequest(string IcloudEmail, string AppSpecificPassword, string CalendarName);
@@ -48,20 +50,7 @@ public class EndUsersController : ControllerBase
             return BadRequest("icloudEmail, appSpecificPassword, and calendarName are required.");
         }
 
-        var (ciphertext, iv, authTag) = _encryptionService.Encrypt(request.AppSpecificPassword);
-
-        var endUser = new EndUser
-        {
-            ClientId = clientId,
-            IcloudEmail = request.IcloudEmail,
-            EncryptedPassword = ciphertext,
-            EncryptionIv = iv,
-            EncryptionAuthTag = authTag,
-            CalendarName = request.CalendarName
-        };
-
-        _dbContext.EndUsers.Add(endUser);
-        await _dbContext.SaveChangesAsync();
+        var endUser = await _creationService.CreateAsync(clientId, request.IcloudEmail, request.AppSpecificPassword, request.CalendarName);
 
         var response = new CreateEndUserResponse(endUser.EndUserIdentifier, endUser.Status);
 

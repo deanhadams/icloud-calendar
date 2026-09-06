@@ -1,9 +1,11 @@
 using System.Globalization;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using icloud_calendar_api.Data;
 using icloud_calendar_api.Features.ApiKeys;
 using icloud_calendar_api.Features.Auth;
+using icloud_calendar_api.Features.EndUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +18,12 @@ namespace icloud_calendar_api.Features.Dashboard;
 public class DashboardController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
+    private readonly EndUserCreationService _endUserCreationService;
 
-    public DashboardController(AppDbContext dbContext)
+    public DashboardController(AppDbContext dbContext, EndUserCreationService endUserCreationService)
     {
         _dbContext = dbContext;
+        _endUserCreationService = endUserCreationService;
     }
 
     public record MeResponse(int ClientId, Guid ClientIdentifier, string Name, string? Email);
@@ -29,6 +33,10 @@ public class DashboardController : ControllerBase
     public record CreateApiKeyResponse(int Id, string Key, string Status, string Tier, DateTimeOffset CreatedAt);
 
     public record EndUserSummaryResponse(Guid UserId, string IcloudEmail, string CalendarName, string Status);
+
+    public record CreateEndUserRequest(string IcloudEmail, string AppSpecificPassword, string CalendarName);
+
+    public record CreateEndUserResponse(Guid UserId, string IcloudEmail, string CalendarName, string Status);
 
     [HttpGet("me")]
     public async Task<ActionResult<MeResponse>> GetMe()
@@ -128,6 +136,58 @@ public class DashboardController : ControllerBase
             .ToListAsync();
 
         return endUsers;
+    }
+
+    [HttpPost("end-users")]
+    public async Task<ActionResult<CreateEndUserResponse>> CreateEndUser(CreateEndUserRequest request)
+    {
+        if (!TryGetClientId(out var clientId))
+        {
+            return Unauthorized();
+        }
+
+        if (string.IsNullOrWhiteSpace(request.IcloudEmail))
+        {
+            ModelState.AddModelError("icloudEmail", "icloudEmail is required.");
+        }
+        else if (!IsValidEmail(request.IcloudEmail))
+        {
+            ModelState.AddModelError("icloudEmail", "icloudEmail must be a valid email address.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.AppSpecificPassword))
+        {
+            ModelState.AddModelError("appSpecificPassword", "appSpecificPassword is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.CalendarName))
+        {
+            ModelState.AddModelError("calendarName", "calendarName is required.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        var endUser = await _endUserCreationService.CreateAsync(clientId, request.IcloudEmail, request.AppSpecificPassword, request.CalendarName);
+
+        var response = new CreateEndUserResponse(endUser.EndUserIdentifier, endUser.IcloudEmail, endUser.CalendarName, endUser.Status);
+
+        return CreatedAtAction(nameof(GetEndUsers), response);
+    }
+
+    private static bool IsValidEmail(string email)
+    {
+        try
+        {
+            _ = new MailAddress(email);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 
     private static (string RawKey, string KeyHash) GenerateApiKey()
