@@ -29,20 +29,7 @@ public class ClientsController : ControllerBase
         _dbContext.Clients.Add(client);
         await _dbContext.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetById), new { id = client.Id }, client);
-    }
-
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<Client>> GetById(int id)
-    {
-        var client = await _dbContext.Clients.FindAsync(id);
-
-        if (client is null)
-        {
-            return NotFound();
-        }
-
-        return client;
+        return CreatedAtAction(nameof(GetByIdentifier), new { clientIdentifier = client.ClientIdentifier }, client);
     }
 
     [HttpGet("by-identifier/{clientIdentifier:guid}")]

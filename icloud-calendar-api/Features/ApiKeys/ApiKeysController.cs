@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 using icloud_calendar_api.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +53,6 @@ public class ApiKeysController : ControllerBase
             .Replace('+', '-')
             .Replace('/', '_');
 
-        var keyHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(rawKey)));
-
-        return (rawKey, keyHash);
+        return (rawKey, ApiKeyHasher.Hash(rawKey));
     }
 }
