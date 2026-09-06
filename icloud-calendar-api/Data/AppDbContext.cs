@@ -27,6 +27,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ApiKey>(entity =>
         {
             entity.Property(e => e.Status).HasDefaultValue("active");
+            entity.Property(e => e.Tier).HasDefaultValue("Free");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("now()");
             entity.HasIndex(e => e.KeyHash).IsUnique();
             entity.HasOne(e => e.Client)

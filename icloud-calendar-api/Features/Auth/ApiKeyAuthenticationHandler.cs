@@ -70,7 +70,9 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<AuthenticationS
         var claims = new[]
         {
             new Claim(ApiKeyAuthenticationDefaults.ClientIdClaimType, apiKey.ClientId.ToString(CultureInfo.InvariantCulture)),
-            new Claim(ApiKeyAuthenticationDefaults.ClientIdentifierClaimType, apiKey.Client.ClientIdentifier.ToString())
+            new Claim(ApiKeyAuthenticationDefaults.ClientIdentifierClaimType, apiKey.Client.ClientIdentifier.ToString()),
+            new Claim(ApiKeyAuthenticationDefaults.ApiKeyIdClaimType, apiKey.Id.ToString(CultureInfo.InvariantCulture)),
+            new Claim(ApiKeyAuthenticationDefaults.TierClaimType, apiKey.Tier)
         };
 
         var identity = new ClaimsIdentity(claims, Scheme.Name);
