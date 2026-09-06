@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using icloud_calendar_api.Data;
 using icloud_calendar_api.Features.ApiKeys;
 using icloud_calendar_api.Features.Auth;
+using icloud_calendar_api.Features.Calendar;
 using icloud_calendar_api.Features.EndUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,13 @@ public class DashboardController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly EndUserCreationService _endUserCreationService;
+    private readonly ICloudCalendarService _calendarService;
 
-    public DashboardController(AppDbContext dbContext, EndUserCreationService endUserCreationService)
+    public DashboardController(AppDbContext dbContext, EndUserCreationService endUserCreationService, ICloudCalendarService calendarService)
     {
         _dbContext = dbContext;
         _endUserCreationService = endUserCreationService;
+        _calendarService = calendarService;
     }
 
     public record MeResponse(int ClientId, Guid ClientIdentifier, string Name, string? Email);
@@ -138,6 +141,43 @@ public class DashboardController : ControllerBase
         return endUsers;
     }
 
+    [HttpGet("end-users/{userId:guid}/events")]
+    public async Task<ActionResult<List<EventsController.CalendarEventResponse>>> GetEndUserEvents(Guid userId, [FromQuery] DateTime start, [FromQuery] DateTime end)
+    {
+        if (!TryGetClientId(out var clientId))
+        {
+            return Unauthorized();
+        }
+
+        if (!await OwnsEndUserAsync(userId, clientId))
+        {
+            return NotFound();
+        }
+
+        try
+        {
+            var events = await _calendarService.GetEventsAsync(userId, start, end);
+
+            var response = events
+                .Select(e => new EventsController.CalendarEventResponse(e.Uid, e.Summary, e.Start, e.End, e.Location, e.Description))
+                .ToList();
+
+            return response;
+        }
+        catch (ICloudUnauthorizedException)
+        {
+            return NeedsReconnectConflict();
+        }
+        catch (EndUserCredentialsMissingException)
+        {
+            return NeedsReconnectConflict();
+        }
+        catch (Exception ex)
+        {
+            return Problem(detail: ex.Message, statusCode: StatusCodes.Status502BadGateway, title: "iCloud calendar request failed.");
+        }
+    }
+
     [HttpPost("end-users")]
     public async Task<ActionResult<CreateEndUserResponse>> CreateEndUser(CreateEndUserRequest request)
     {
@@ -175,6 +215,21 @@ public class DashboardController : ControllerBase
         var response = new CreateEndUserResponse(endUser.EndUserIdentifier, endUser.IcloudEmail, endUser.CalendarName, endUser.Status);
 
         return CreatedAtAction(nameof(GetEndUsers), response);
+    }
+
+    private ObjectResult NeedsReconnectConflict()
+    {
+        return Problem(
+            detail: "This end user's iCloud credentials are no longer valid and must be reconnected.",
+            statusCode: StatusCodes.Status409Conflict,
+            title: "iCloud reconnect required.");
+    }
+
+    private async Task<bool> OwnsEndUserAsync(Guid userId, int clientId)
+    {
+        return await _dbContext.EndUsers
+            .AsNoTracking()
+            .AnyAsync(u => u.EndUserIdentifier == userId && u.ClientId == clientId);
     }
 
     private static bool IsValidEmail(string email)
