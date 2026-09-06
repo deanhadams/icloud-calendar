@@ -1,6 +1,7 @@
 import type {
   ApiKeyCreated,
   ApiKeySummary,
+  CalendarEvent,
   CreateEndUserRequest,
   DashboardMe,
   EndUser,
@@ -32,6 +33,9 @@ async function parseErrorMessage(response: Response): Promise<string> {
       if (firstMessage) return firstMessage
     }
 
+    // ASP.NET Core's Problem() helper puts the specific message in `detail`,
+    // leaving `title` as a generic category label — prefer detail.
+    if (typeof body?.detail === 'string') return body.detail
     if (typeof body?.title === 'string') return body.title
   } catch {
     // response body wasn't JSON; fall through to status text
@@ -104,4 +108,14 @@ export function createEndUser(token: string, payload: CreateEndUserRequest): Pro
     token,
     body: JSON.stringify(payload),
   })
+}
+
+export function getEndUserEvents(
+  token: string,
+  userId: string,
+  start: string,
+  end: string,
+): Promise<CalendarEvent[]> {
+  const params = new URLSearchParams({ start, end })
+  return request<CalendarEvent[]>(`/v1/dashboard/end-users/${userId}/events?${params}`, { token })
 }

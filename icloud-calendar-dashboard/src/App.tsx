@@ -5,6 +5,7 @@ import { SignInModal } from './components/SignInModal'
 import { Dashboard } from './pages/Dashboard'
 import { EndUsers } from './pages/EndUsers'
 import { Landing } from './pages/Landing'
+import { Playground } from './pages/Playground'
 
 function App() {
   return (
@@ -27,6 +28,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <EndUsers />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/playground"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Playground />
               </Layout>
             </ProtectedRoute>
           }

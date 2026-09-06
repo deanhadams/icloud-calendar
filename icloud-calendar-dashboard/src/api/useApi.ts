@@ -7,6 +7,7 @@ import {
   createApiKey,
   createEndUser,
   getApiKeys,
+  getEndUserEvents,
   getEndUsers,
   getMe,
   revokeApiKey,
@@ -46,6 +47,8 @@ export function useApi() {
       getEndUsers: () => withAuth(getEndUsers),
       createEndUser: (payload: CreateEndUserRequest) =>
         withAuth((token) => createEndUser(token, payload)),
+      getEndUserEvents: (userId: string, start: string, end: string) =>
+        withAuth((token) => getEndUserEvents(token, userId, start, end)),
     }),
     [withAuth],
   )

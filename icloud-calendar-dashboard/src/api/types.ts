@@ -38,3 +38,12 @@ export interface CreateEndUserRequest {
   appSpecificPassword: string
   calendarName: string
 }
+
+export interface CalendarEvent {
+  eventId: string
+  title: string
+  start: string
+  end: string
+  location: string | null
+  notes: string | null
+}

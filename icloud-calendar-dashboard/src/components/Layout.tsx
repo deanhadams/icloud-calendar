@@ -28,6 +28,9 @@ export function Layout({ children }: { children: ReactNode }) {
           <NavLink to="/dashboard/end-users" className={navLinkClass}>
             End Users
           </NavLink>
+          <NavLink to="/dashboard/playground" className={navLinkClass}>
+            Playground
+          </NavLink>
         </nav>
 
         <div className="mt-auto border-t border-white/10 pt-4">
