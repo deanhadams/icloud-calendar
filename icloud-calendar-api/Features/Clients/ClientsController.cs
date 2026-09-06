@@ -18,7 +18,7 @@ public class ClientsController : ControllerBase
         _dbContext = dbContext;
     }
 
-    public record CreateClientRequest(string Name);
+    public record CreateClientRequest(string Name, string? Email = null);
 
     [HttpPost]
     public async Task<ActionResult<Client>> Create(CreateClientRequest request)
@@ -28,7 +28,12 @@ public class ClientsController : ControllerBase
             return BadRequest("Name is required.");
         }
 
-        var client = new Client { Name = request.Name };
+        var client = new Client
+        {
+            Name = request.Name,
+            Email = string.IsNullOrWhiteSpace(request.Email) ? null : request.Email.Trim()
+        };
+
         _dbContext.Clients.Add(client);
         await _dbContext.SaveChangesAsync();
 

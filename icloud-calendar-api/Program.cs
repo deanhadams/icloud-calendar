@@ -1,10 +1,13 @@
+using System.Text;
 using icloud_calendar_api.Data;
 using icloud_calendar_api.Features.Auth;
 using icloud_calendar_api.Features.Calendar;
 using icloud_calendar_api.Features.Encryption;
 using icloud_calendar_api.Features.RateLimiting;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,13 +21,37 @@ builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // "ApiKey" stays the default scheme (used by every [Authorize] under /v1 that doesn't
-// name a scheme explicitly). "AdminKey" is registered alongside it but is never
-// selected implicitly — only [Authorize(AuthenticationSchemes = AdminAuthenticationDefaults.SchemeName)]
-// on the Clients/ApiKeys controllers triggers it, so the two never both run for the
-// same request.
+// name a scheme explicitly — Ping/EndUsers/Events). "AdminKey" and "DashboardJwt" are
+// registered alongside it but are never selected implicitly — only an [Authorize] that
+// explicitly names one of them triggers it, so no two of the three ever run for the
+// same request:
+//   - ApiKey        -> PingController, EndUsersController, EventsController (default)
+//   - AdminKey       -> ClientsController, ApiKeysController
+//   - DashboardJwt  -> DashboardController (DashboardAuthController itself is unauthenticated — it's the login endpoint)
 builder.Services.AddAuthentication(ApiKeyAuthenticationDefaults.SchemeName)
     .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationDefaults.SchemeName, options => { })
-    .AddScheme<AuthenticationSchemeOptions, AdminApiKeyAuthenticationHandler>(AdminAuthenticationDefaults.SchemeName, options => { });
+    .AddScheme<AuthenticationSchemeOptions, AdminApiKeyAuthenticationHandler>(AdminAuthenticationDefaults.SchemeName, options => { })
+    .AddJwtBearer(DashboardAuthenticationDefaults.SchemeName, options =>
+    {
+        var jwtSecret = builder.Configuration["Dashboard:JwtSecret"];
+
+        if (string.IsNullOrWhiteSpace(jwtSecret))
+        {
+            throw new InvalidOperationException(
+                "Dashboard:JwtSecret is not configured. Set it (e.g. as a Railway environment " +
+                "variable) or in appsettings.Development.json for local development.");
+        }
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+            ClockSkew = TimeSpan.FromMinutes(1)
+        };
+    });
 
 builder.Services.AddSingleton<IPasswordEncryptionService, AesGcmPasswordEncryptionService>();
 
@@ -53,7 +80,17 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Several controllers declare nested request/response records with the same short
+    // name (e.g. CreateApiKeyResponse in both ApiKeysController and DashboardController).
+    // Swashbuckle's default schemaId is just that short name, which collides across
+    // controllers — qualify with the declaring type so each stays unique.
+    options.CustomSchemaIds(type =>
+        type.DeclaringType != null
+            ? $"{type.DeclaringType.Name}.{type.Name}"
+            : type.Name);
+});
 
 var app = builder.Build();
 

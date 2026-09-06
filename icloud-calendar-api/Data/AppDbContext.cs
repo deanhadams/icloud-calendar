@@ -22,6 +22,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("now()");
             entity.Property(e => e.ClientIdentifier).HasDefaultValueSql("gen_random_uuid()");
             entity.HasIndex(e => e.ClientIdentifier).IsUnique();
+            entity.HasIndex(e => e.Email).IsUnique();
         });
 
         modelBuilder.Entity<ApiKey>(entity =>
