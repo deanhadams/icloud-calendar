@@ -2,7 +2,16 @@ import { useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { useSignInModal } from '../context/useSignInModal'
-import { ApiError, createApiKey, getApiKeys, getEndUsers, getMe, revokeApiKey } from './client'
+import {
+  ApiError,
+  createApiKey,
+  createEndUser,
+  getApiKeys,
+  getEndUsers,
+  getMe,
+  revokeApiKey,
+} from './client'
+import type { CreateEndUserRequest } from './types'
 
 export function useApi() {
   const { token, signOut } = useAuth()
@@ -35,6 +44,8 @@ export function useApi() {
       createApiKey: () => withAuth(createApiKey),
       revokeApiKey: (id: string) => withAuth((token) => revokeApiKey(token, id)),
       getEndUsers: () => withAuth(getEndUsers),
+      createEndUser: (payload: CreateEndUserRequest) =>
+        withAuth((token) => createEndUser(token, payload)),
     }),
     [withAuth],
   )

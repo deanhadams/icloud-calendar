@@ -1,6 +1,7 @@
 import type {
   ApiKeyCreated,
   ApiKeySummary,
+  CreateEndUserRequest,
   DashboardMe,
   EndUser,
   GoogleAuthResponse,
@@ -22,6 +23,15 @@ async function parseErrorMessage(response: Response): Promise<string> {
   try {
     const body = await response.clone().json()
     if (typeof body?.message === 'string') return body.message
+
+    // ASP.NET Core's ValidationProblemDetails puts the useful per-field
+    // messages in `errors`, with `title` left as a generic
+    // "One or more validation errors occurred." — prefer the former.
+    if (body?.errors && typeof body.errors === 'object') {
+      const firstMessage = Object.values(body.errors).flat().find((m) => typeof m === 'string')
+      if (firstMessage) return firstMessage
+    }
+
     if (typeof body?.title === 'string') return body.title
   } catch {
     // response body wasn't JSON; fall through to status text
@@ -86,4 +96,12 @@ export function revokeApiKey(token: string, id: string): Promise<void> {
 
 export function getEndUsers(token: string): Promise<EndUser[]> {
   return request<EndUser[]>('/v1/dashboard/end-users', { token })
+}
+
+export function createEndUser(token: string, payload: CreateEndUserRequest): Promise<EndUser> {
+  return request<EndUser>('/v1/dashboard/end-users', {
+    method: 'POST',
+    token,
+    body: JSON.stringify(payload),
+  })
 }

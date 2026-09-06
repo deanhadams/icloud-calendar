@@ -32,3 +32,9 @@ export interface EndUser {
   calendarName: string
   status: EndUserStatus
 }
+
+export interface CreateEndUserRequest {
+  icloudEmail: string
+  appSpecificPassword: string
+  calendarName: string
+}

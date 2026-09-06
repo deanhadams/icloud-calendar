@@ -1,9 +1,9 @@
 import { GoogleLogin } from '@react-oauth/google'
-import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { useSignInModal } from '../context/useSignInModal'
+import { Modal } from './Modal'
 
 export function SignInModal() {
   const { isOpen, close } = useSignInModal()
@@ -15,17 +15,6 @@ export function SignInModal() {
     setError(null)
     close()
   }
-
-  useEffect(() => {
-    if (!isOpen) return
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') handleClose()
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen])
 
   // Reactively close on successful sign-in rather than relying on the
   // success handler's close()-then-navigate() ordering, which can race
@@ -53,35 +42,12 @@ export function SignInModal() {
   }
 
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/60 p-4"
-      onClick={handleClose}
-    >
-      <div
-        className="w-full max-w-[400px] rounded-md border border-line bg-paper p-8"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-start justify-between gap-4">
-          <h2 className="text-lg font-bold text-ink">Sign in to manage your API access</h2>
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label="Close"
-            className="shrink-0 text-ink-muted transition-colors hover:text-ink"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        <div className="mt-6">
-          <GoogleLogin
-            onSuccess={(response) => handleSuccess(response.credential)}
-            onError={() => setError('Google sign-in failed. Please try again.')}
-          />
-        </div>
-
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-      </div>
-    </div>
+    <Modal title="Sign in to manage your API access" onClose={handleClose}>
+      <GoogleLogin
+        onSuccess={(response) => handleSuccess(response.credential)}
+        onError={() => setError('Google sign-in failed. Please try again.')}
+      />
+      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+    </Modal>
   )
 }
