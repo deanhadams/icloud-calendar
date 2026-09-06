@@ -3,6 +3,7 @@ import { Layout } from './components/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { SignInModal } from './components/SignInModal'
 import { Dashboard } from './pages/Dashboard'
+import { Endpoints } from './pages/Endpoints'
 import { EndUsers } from './pages/EndUsers'
 import { HowTo } from './pages/HowTo'
 import { Landing } from './pages/Landing'
@@ -49,6 +50,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <HowTo />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/endpoints"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Endpoints />
               </Layout>
             </ProtectedRoute>
           }

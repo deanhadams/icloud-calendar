@@ -34,6 +34,9 @@ export function Layout({ children }: { children: ReactNode }) {
           <NavLink to="/dashboard/how-to" className={navLinkClass}>
             How To
           </NavLink>
+          <NavLink to="/dashboard/endpoints" className={navLinkClass}>
+            Endpoints
+          </NavLink>
         </nav>
 
         <div className="mt-auto border-t border-white/10 pt-4">
