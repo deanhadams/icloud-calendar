@@ -88,6 +88,7 @@ export function EndUsers() {
                 <tr className="border-b border-line text-ink-muted">
                   <th className="py-2 pr-4 text-xs font-medium">Email</th>
                   <th className="py-2 pr-4 text-xs font-medium">Calendar</th>
+                  <th className="py-2 pr-4 text-xs font-medium">User ID</th>
                   <th className="py-2 pr-4 text-xs font-medium">Status</th>
                 </tr>
               </thead>
@@ -96,6 +97,7 @@ export function EndUsers() {
                   <tr key={user.userId} className="border-b border-line last:border-0">
                     <td className="py-3 pr-4 font-mono text-ink">{user.icloudEmail}</td>
                     <td className="py-3 pr-4 font-mono text-ink">{user.calendarName}</td>
+                    <td className="py-3 pr-4 font-mono text-ink">{user.userId}</td>
                     <td className="py-3 pr-4">
                       <StatusBadge status={user.status} />
                     </td>
