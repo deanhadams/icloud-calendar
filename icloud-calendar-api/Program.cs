@@ -17,8 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// "ApiKey" stays the default scheme (used by every [Authorize] under /v1 that doesn't
+// name a scheme explicitly). "AdminKey" is registered alongside it but is never
+// selected implicitly — only [Authorize(AuthenticationSchemes = AdminAuthenticationDefaults.SchemeName)]
+// on the Clients/ApiKeys controllers triggers it, so the two never both run for the
+// same request.
 builder.Services.AddAuthentication(ApiKeyAuthenticationDefaults.SchemeName)
-    .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationDefaults.SchemeName, options => { });
+    .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationDefaults.SchemeName, options => { })
+    .AddScheme<AuthenticationSchemeOptions, AdminApiKeyAuthenticationHandler>(AdminAuthenticationDefaults.SchemeName, options => { });
 
 builder.Services.AddSingleton<IPasswordEncryptionService, AesGcmPasswordEncryptionService>();
 

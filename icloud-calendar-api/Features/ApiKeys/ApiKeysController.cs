@@ -1,11 +1,14 @@
 using System.Security.Cryptography;
 using icloud_calendar_api.Data;
+using icloud_calendar_api.Features.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace icloud_calendar_api.Features.ApiKeys;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = AdminAuthenticationDefaults.SchemeName)]
 [Route("[controller]")]
 public class ApiKeysController : ControllerBase
 {

@@ -1,10 +1,13 @@
 using icloud_calendar_api.Data;
+using icloud_calendar_api.Features.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace icloud_calendar_api.Features.Clients;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = AdminAuthenticationDefaults.SchemeName)]
 [Route("[controller]")]
 public class ClientsController : ControllerBase
 {
