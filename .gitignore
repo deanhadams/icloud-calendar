@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/icloud-calendar-api/bin/Debug/net8.0
+/icloud-calendar-api/obj
+*.user
+/icloud-calendar-api/appsettings.Development.json
+/icloud-calendar-api/Properties
