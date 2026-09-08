@@ -2,7 +2,9 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { SignInModal } from './components/SignInModal'
+import { AppleAppPassword } from './pages/AppleAppPassword'
 import { Dashboard } from './pages/Dashboard'
+import { Docs } from './pages/Docs'
 import { Endpoints } from './pages/Endpoints'
 import { EndUsers } from './pages/EndUsers'
 import { HowTo } from './pages/HowTo'
@@ -14,6 +16,8 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/docs" element={<Docs />} />
+        <Route path="/docs/apple-app-password" element={<AppleAppPassword />} />
         <Route
           path="/dashboard"
           element={

@@ -1,4 +1,5 @@
 import { BookOpen, KeyRound, PlayCircle, type LucideIcon } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface Feature {
   icon: LucideIcon
@@ -16,7 +17,7 @@ const FEATURES: Feature[] = [
     title: 'Set up your Apple app password',
     description:
       'Generate an app-specific password from your Apple ID so iSyncal can authenticate with your calendar securely, without your main password.',
-    href: '#',
+    href: '/docs/apple-app-password',
     linkLabel: 'View guide',
   },
   {
@@ -25,7 +26,7 @@ const FEATURES: Feature[] = [
     title: 'Setup documentation',
     description:
       'Everything you need to authenticate, list calendars, and start reading and writing events with the REST API.',
-    href: '#',
+    href: '/docs',
     linkLabel: 'Read the docs',
   },
   {
@@ -53,12 +54,21 @@ export function FeatureCards() {
               </div>
               <h3 className="mt-4 text-base font-semibold text-ink">{title}</h3>
               <p className="mt-2 text-sm text-ink-muted">{description}</p>
-              <a
-                href={href}
-                className="mt-4 inline-block text-sm font-medium text-cobalt hover:text-cobalt-hover"
-              >
-                {linkLabel}
-              </a>
+              {href.startsWith('/') ? (
+                <Link
+                  to={href}
+                  className="mt-4 inline-block text-sm font-medium text-cobalt hover:text-cobalt-hover"
+                >
+                  {linkLabel}
+                </Link>
+              ) : (
+                <a
+                  href={href}
+                  className="mt-4 inline-block text-sm font-medium text-cobalt hover:text-cobalt-hover"
+                >
+                  {linkLabel}
+                </a>
+              )}
             </div>
           ))}
         </div>

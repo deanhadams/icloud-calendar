@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useSignInModal } from '../../context/useSignInModal'
 
 // Headline options considered:
@@ -35,9 +36,9 @@ export function Hero() {
             >
               Get API Access
             </button>
-            <a href="#" className="text-sm font-medium text-paper/70 hover:text-paper">
+            <Link to="/docs" className="text-sm font-medium text-paper/70 hover:text-paper">
               View Documentation
-            </a>
+            </Link>
           </div>
         </div>
       </div>

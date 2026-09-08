@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useSignInModal } from '../../context/useSignInModal'
 
 export function LandingFooter() {
@@ -9,9 +10,9 @@ export function LandingFooter() {
         <span className="text-base font-bold text-white">iSyncal</span>
 
         <nav className="flex items-center gap-6">
-          <a href="#" className="text-sm text-paper/60 hover:text-paper">
+          <Link to="/docs" className="text-sm text-paper/60 hover:text-paper">
             Docs
-          </a>
+          </Link>
           <button type="button" onClick={open} className="text-sm text-paper/60 hover:text-paper">
             Sign in
           </button>

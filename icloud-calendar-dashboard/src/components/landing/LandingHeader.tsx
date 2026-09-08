@@ -1,5 +1,6 @@
 import { LogIn } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useSignInModal } from '../../context/useSignInModal'
 
 export function LandingHeader() {
@@ -23,9 +24,9 @@ export function LandingHeader() {
         <span className="text-lg font-bold text-white">iSyncal</span>
 
         <nav className="flex items-center gap-6">
-          <a href="#" className="text-sm font-medium text-paper/70 hover:text-paper">
+          <Link to="/docs" className="text-sm font-medium text-paper/70 hover:text-paper">
             Docs
-          </a>
+          </Link>
           <button
             type="button"
             onClick={open}
