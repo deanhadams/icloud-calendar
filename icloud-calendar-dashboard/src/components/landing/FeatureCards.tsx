@@ -1,4 +1,4 @@
-import { BookOpen, KeyRound, PlayCircle, type LucideIcon } from 'lucide-react'
+import { BookOpen, Code, KeyRound, type LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface Feature {
@@ -30,13 +30,13 @@ const FEATURES: Feature[] = [
     linkLabel: 'Read the docs',
   },
   {
-    icon: PlayCircle,
+    icon: Code,
     iconTint: 'bg-cobalt/16',
-    title: 'Watch the walkthrough',
+    title: "See how it's built",
     description:
-      'A ten-minute video covering account setup, your first API call, and handling recurring events.',
-    href: '#',
-    linkLabel: 'Watch on YouTube',
+      'A step-by-step code walkthrough covering account setup, your first API call, and handling recurring events.',
+    href: '/docs/quickstart-walkthrough',
+    linkLabel: 'View the walkthrough',
   },
 ]
 

@@ -10,6 +10,7 @@ import { EndUsers } from './pages/EndUsers'
 import { HowTo } from './pages/HowTo'
 import { Landing } from './pages/Landing'
 import { Playground } from './pages/Playground'
+import { QuickstartWalkthrough } from './pages/QuickstartWalkthrough'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/docs/apple-app-password" element={<AppleAppPassword />} />
+        <Route path="/docs/quickstart-walkthrough" element={<QuickstartWalkthrough />} />
         <Route
           path="/dashboard"
           element={

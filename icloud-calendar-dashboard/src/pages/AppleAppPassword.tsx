@@ -1,57 +1,8 @@
 import { Info } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { DocsHeader } from '../components/DocsHeader'
-
-interface Step {
-  title: string
-  description: string
-}
-
-const STEPS: Step[] = [
-  {
-    title: 'Go to appleid.apple.com and sign in',
-    description:
-      'Sign in with your Apple ID and password. Use Chrome, Firefox, or Edge rather than Safari, which some users report issues with during this flow.',
-  },
-  {
-    title: 'Open Sign-In and Security',
-    description: 'In the left sidebar (or main menu on mobile), select "Sign-In and Security."',
-  },
-  {
-    title: 'Select App-Specific Passwords',
-    description: 'Click "App-Specific Passwords" in that section.',
-  },
-  {
-    title: 'Generate a new password',
-    description: 'Click "Generate an app-specific password" or the "+" button.',
-  },
-  {
-    title: 'Label it',
-    description: 'Give it a name you\'ll recognize later, e.g. "Syncal" — this makes it easy to identify and revoke later if needed.',
-  },
-  {
-    title: 'Copy the generated password',
-    description: "Apple shows it once. Copy it immediately; you won't be able to view it again after leaving the page.",
-  },
-  {
-    title: 'Paste it into Syncal',
-    description: 'Use this password (not your regular Apple ID password) when adding a calendar in the Syncal dashboard.',
-  },
-]
-
-function StepCard({ number, step }: { number: number; step: Step }) {
-  return (
-    <div className="flex gap-4 rounded-md border border-line bg-white p-5">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cobalt-tint font-mono text-sm font-semibold text-cobalt">
-        {number}
-      </span>
-      <div>
-        <h3 className="text-sm font-semibold text-ink">{step.title}</h3>
-        <p className="mt-1 text-sm text-ink-muted">{step.description}</p>
-      </div>
-    </div>
-  )
-}
+import { SetupSlideshow } from '../components/SetupSlideshow'
+import { SETUP_STEPS } from '../components/setupSteps'
 
 export function AppleAppPassword() {
   return (
@@ -80,10 +31,19 @@ export function AppleAppPassword() {
           </p>
         </div>
 
-        <div className="mt-8 space-y-4">
-          {STEPS.map((step, index) => (
-            <StepCard key={step.title} number={index + 1} step={step} />
-          ))}
+        <div className="mt-8">
+          <SetupSlideshow />
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-sm font-semibold text-ink">Quick reference</h2>
+          <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-ink-muted">
+            {SETUP_STEPS.map((step) => (
+              <li key={step.title}>
+                <span className="font-medium text-ink">{step.title}.</span> {step.description}
+              </li>
+            ))}
+          </ol>
         </div>
 
         <div className="mt-8 space-y-3 text-sm text-ink-muted">

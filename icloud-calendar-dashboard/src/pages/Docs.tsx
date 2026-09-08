@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { DocsHeader } from '../components/DocsHeader'
+import { PathTemplate, Placeholder } from '../components/PathTemplate'
 import { useSignInModal } from '../context/useSignInModal'
 
 const BASE_URL = 'https://icloud-calendar-production.up.railway.app'
@@ -379,24 +380,6 @@ function useScrollSpy(ids: string[]): string {
   }, [ids])
 
   return activeId
-}
-
-function Placeholder({ children }: { children: string }) {
-  return <span className="font-medium italic text-violet">{children}</span>
-}
-
-function PathTemplate({ path }: { path: string }) {
-  const segments = path.split('/')
-  return (
-    <>
-      {segments.map((segment, index) => (
-        <span key={index}>
-          {index > 0 && '/'}
-          {/^\{.*\}$/.test(segment) ? <Placeholder>{segment}</Placeholder> : segment}
-        </span>
-      ))}
-    </>
-  )
 }
 
 function CodeStrip({ children }: { children: string }) {
