@@ -15,6 +15,7 @@ import { DocsHeader } from '../components/DocsHeader'
 import { DocsHeroBand } from '../components/DocsHeroBand'
 import { HttpStatusBadge } from '../components/HttpStatusBadge'
 import { SEVERITY_BORDER_CLASSES, severityOfStatus } from '../components/httpStatus'
+import { PageMeta } from '../components/PageMeta'
 import { PathTemplate, Placeholder } from '../components/PathTemplate'
 import { useSignInModal } from '../context/useSignInModal'
 
@@ -563,6 +564,11 @@ export function Docs() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <PageMeta
+        title="Documentation | Syncal"
+        description="Full API reference, authentication, quickstart, and error handling for the Syncal iCloud Calendar API."
+        path="/docs"
+      />
       <DocsHeader />
       <DocsHeroBand
         title="Documentation"

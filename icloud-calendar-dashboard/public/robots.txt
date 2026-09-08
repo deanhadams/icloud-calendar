@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /docs
+Disallow: /dashboard
+
+Sitemap: https://icloud-calendar-dashboard-production.up.railway.app/sitemap.xml

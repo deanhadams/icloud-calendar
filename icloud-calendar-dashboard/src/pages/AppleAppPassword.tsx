@@ -2,12 +2,31 @@ import { Info } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { DocsHeader } from '../components/DocsHeader'
 import { DocsHeroBand } from '../components/DocsHeroBand'
+import { JsonLd } from '../components/JsonLd'
+import { PageMeta } from '../components/PageMeta'
 import { SetupSlideshow } from '../components/SetupSlideshow'
 import { SETUP_STEPS } from '../components/setupSteps'
+
+const TITLE = 'Setting up your Apple app-specific password | Syncal'
+const DESCRIPTION =
+  'Step-by-step guide to generating an Apple app-specific password to connect a calendar to Syncal.'
+
+const HOW_TO_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Setting up your Apple app-specific password',
+  step: SETUP_STEPS.map((step) => ({
+    '@type': 'HowToStep',
+    name: step.title,
+    text: step.description,
+  })),
+}
 
 export function AppleAppPassword() {
   return (
     <div className="min-h-screen bg-paper">
+      <PageMeta title={TITLE} description={DESCRIPTION} path="/docs/apple-app-password" />
+      <JsonLd data={HOW_TO_JSON_LD} />
       <DocsHeader />
       <DocsHeroBand
         title="Setting up your Apple app-specific password"
