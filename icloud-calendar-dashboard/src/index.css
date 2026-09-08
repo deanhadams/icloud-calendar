@@ -9,11 +9,14 @@
   --color-cobalt: #2e4bdb;
   --color-cobalt-hover: #2540b8;
   --color-cobalt-tint: #eef1fc;
+  --color-cobalt-tint-strong: #e2e7fa;
   --color-violet: #7c5cfc;
   --color-signal-green: #16a34a;
   --color-signal-green-bg: #dcfce7;
   --color-signal-amber: #ca8a04;
   --color-signal-amber-bg: #fef3c7;
+  --color-signal-red: #dc2626;
+  --color-signal-red-bg: #fee2e2;
 
   --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;

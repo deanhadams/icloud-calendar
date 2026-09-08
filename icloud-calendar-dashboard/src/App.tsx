@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { ScrollToTop } from './components/ScrollToTop'
 import { SignInModal } from './components/SignInModal'
 import { AppleAppPassword } from './pages/AppleAppPassword'
 import { Dashboard } from './pages/Dashboard'
@@ -15,6 +16,7 @@ import { QuickstartWalkthrough } from './pages/QuickstartWalkthrough'
 function App() {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/docs" element={<Docs />} />

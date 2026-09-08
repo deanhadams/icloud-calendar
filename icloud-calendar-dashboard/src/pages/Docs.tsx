@@ -1,7 +1,20 @@
+import {
+  AlertCircle,
+  BookOpen,
+  Gauge,
+  Key,
+  Lightbulb,
+  List,
+  Rocket,
+  type LucideIcon,
+} from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { DocsHeader } from '../components/DocsHeader'
+import { DocsHeroBand } from '../components/DocsHeroBand'
+import { HttpStatusBadge } from '../components/HttpStatusBadge'
+import { SEVERITY_BORDER_CLASSES, severityOfStatus } from '../components/httpStatus'
 import { PathTemplate, Placeholder } from '../components/PathTemplate'
 import { useSignInModal } from '../context/useSignInModal'
 
@@ -17,7 +30,7 @@ const METHOD_STYLES: Record<Method, string> = {
   GET: 'bg-signal-green-bg text-signal-green',
   POST: 'bg-cobalt-tint text-cobalt',
   PATCH: 'bg-signal-amber-bg text-signal-amber',
-  DELETE: 'bg-red-100 text-red-700',
+  DELETE: 'bg-signal-red-bg text-signal-red',
 }
 
 interface FieldDoc {
@@ -320,16 +333,16 @@ const EVENT_ENDPOINTS: EndpointReferenceDoc[] = [
   },
 ]
 
-const TOC_SECTIONS = [
-  { id: 'introduction', label: 'Introduction' },
-  { id: 'authentication', label: 'Authentication' },
-  { id: 'quickstart', label: 'Quickstart' },
-  { id: 'concepts', label: 'Concepts' },
-  { id: 'reference', label: 'Endpoint Reference' },
+const TOC_SECTIONS: { id: string; label: string; indent?: boolean; icon?: LucideIcon }[] = [
+  { id: 'introduction', label: 'Introduction', icon: BookOpen },
+  { id: 'authentication', label: 'Authentication', icon: Key },
+  { id: 'quickstart', label: 'Quickstart', icon: Rocket },
+  { id: 'concepts', label: 'Concepts', icon: Lightbulb },
+  { id: 'reference', label: 'Endpoint Reference', icon: List },
   { id: 'reference-calendars', label: 'Calendars', indent: true },
   { id: 'reference-events', label: 'Events', indent: true },
-  { id: 'errors', label: 'Errors' },
-  { id: 'rate-limits', label: 'Rate Limits' },
+  { id: 'errors', label: 'Errors', icon: AlertCircle },
+  { id: 'rate-limits', label: 'Rate Limits', icon: Gauge },
 ]
 
 const TOC_IDS = TOC_SECTIONS.map((section) => section.id)
@@ -394,7 +407,7 @@ function ResponseBlock({ status, contentType, body }: { status: string; contentT
   return (
     <div>
       <div className="mb-1 flex flex-wrap items-center gap-2 text-xs">
-        <span className="font-mono font-semibold text-ink">{status}</span>
+        <HttpStatusBadge status={status} />
         {contentType && <span className="font-mono text-ink-muted">{contentType}</span>}
       </div>
       <pre className="overflow-x-auto whitespace-pre-wrap rounded-md bg-cobalt-tint p-3 font-mono text-xs text-ink">
@@ -408,24 +421,26 @@ function FieldTable({ title, fields }: { title: string; fields: FieldDoc[] }) {
   return (
     <div>
       <p className="mb-2 text-xs font-medium text-ink-muted">{title}</p>
-      <table className="w-full text-left text-xs">
-        <thead>
-          <tr className="text-ink-muted">
-            <th className="pb-1 pr-4 font-medium">Field</th>
-            <th className="pb-1 pr-4 font-medium">Type</th>
-            <th className="pb-1 font-medium">Required</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fields.map((field) => (
-            <tr key={field.name} className="border-t border-line">
-              <td className="py-1.5 pr-4 font-mono text-ink">{field.name}</td>
-              <td className="py-1.5 pr-4 font-mono text-ink-muted">{field.type}</td>
-              <td className="py-1.5 text-ink-muted">{field.required ? 'Yes' : 'No'}</td>
+      <div className="overflow-hidden rounded-md border border-line">
+        <table className="w-full text-left text-xs">
+          <thead>
+            <tr className="bg-cobalt-tint-strong">
+              <th className="px-3 py-2 font-bold text-ink">Field</th>
+              <th className="px-3 py-2 font-bold text-ink">Type</th>
+              <th className="px-3 py-2 font-bold text-ink">Required</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {fields.map((field, i) => (
+              <tr key={field.name} className={i % 2 === 1 ? 'bg-cobalt-tint/40' : 'bg-white'}>
+                <td className="px-3 py-2 font-mono text-ink">{field.name}</td>
+                <td className="px-3 py-2 font-mono text-ink-muted">{field.type}</td>
+                <td className="px-3 py-2 text-ink-muted">{field.required ? 'Yes' : 'No'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -489,24 +504,33 @@ function EndpointReference({ endpoint }: { endpoint: EndpointReferenceDoc }) {
 function TocNav({ activeId }: { activeId: string }) {
   return (
     <nav className="hidden lg:sticky lg:top-10 lg:block lg:self-start">
-      <ul className="space-y-1 border-l border-line">
-        {TOC_SECTIONS.map((section) => (
-          <li key={section.id}>
-            <a
-              href={`#${section.id}`}
-              className={`block border-l-2 py-1.5 text-sm transition-colors ${
-                section.indent ? 'pl-8' : 'pl-4'
-              } -ml-px ${
-                activeId === section.id
-                  ? 'border-cobalt font-medium text-cobalt'
-                  : 'border-transparent text-ink-muted hover:text-ink'
-              }`}
-            >
-              {section.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div className="overflow-hidden rounded-md border border-line bg-white shadow-sm">
+        <div className="border-b border-line bg-cobalt-tint-strong px-3 py-2">
+          <p className="text-xs font-bold tracking-wide text-ink uppercase">On this page</p>
+        </div>
+        <ul className="space-y-0.5 p-2">
+          {TOC_SECTIONS.map((section) => {
+            const Icon = section.icon
+            return (
+              <li key={section.id}>
+                <a
+                  href={`#${section.id}`}
+                  className={`flex items-center gap-2 rounded-md border-l-[3px] py-1.5 text-sm transition-colors ${
+                    section.indent ? 'pr-2 pl-7' : 'pr-2 pl-2.5'
+                  } ${
+                    activeId === section.id
+                      ? 'border-cobalt bg-cobalt-tint font-semibold text-cobalt'
+                      : 'border-transparent text-ink-muted hover:bg-cobalt-tint/50 hover:text-ink'
+                  }`}
+                >
+                  {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                  {section.label}
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </nav>
   )
 }
@@ -540,6 +564,10 @@ export function Docs() {
   return (
     <div className="min-h-screen bg-paper">
       <DocsHeader />
+      <DocsHeroBand
+        title="Documentation"
+        subtitle="Everything you need to authenticate, list calendars, and start reading and writing events with the REST API."
+      />
 
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr]">
@@ -703,9 +731,9 @@ export function Docs() {
               <div className="overflow-hidden rounded-md border border-line bg-white">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-line bg-cobalt-tint text-ink-muted">
-                      <th className="px-6 py-2 text-xs font-medium">Status</th>
-                      <th className="px-6 py-2 text-xs font-medium">Meaning</th>
+                    <tr className="bg-cobalt-tint-strong">
+                      <th className="px-6 py-2.5 font-bold text-ink">Status</th>
+                      <th className="px-6 py-2.5 font-bold text-ink">Meaning</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -717,10 +745,17 @@ export function Docs() {
                       ['429', 'Rate limit exceeded for your tier.'],
                       ['502', 'iCloud rejected or failed a CalDAV request for a reason other than an auth failure.'],
                       ['500', 'An unexpected server error.'],
-                    ].map(([status, meaning]) => (
-                      <tr key={status} className="border-b border-line last:border-0">
-                        <td className="px-6 py-3 font-mono text-ink">{status}</td>
-                        <td className="px-6 py-3 text-ink-muted">{meaning}</td>
+                    ].map(([status, meaning], i) => (
+                      <tr
+                        key={status}
+                        className={`border-l-[3px] ${SEVERITY_BORDER_CLASSES[severityOfStatus(status)]} ${
+                          i % 2 === 1 ? 'bg-cobalt-tint/40' : 'bg-white'
+                        }`}
+                      >
+                        <td className="px-6 py-2.5">
+                          <HttpStatusBadge status={status} />
+                        </td>
+                        <td className="px-6 py-2.5 text-ink-muted">{meaning}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -737,27 +772,34 @@ export function Docs() {
               <div className="overflow-hidden rounded-md border border-line bg-white">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-line bg-cobalt-tint text-ink-muted">
-                      <th className="px-6 py-2 text-xs font-medium">Tier</th>
-                      <th className="px-6 py-2 text-xs font-medium">Requests / minute</th>
+                    <tr className="bg-cobalt-tint-strong">
+                      <th className="px-6 py-2.5 font-bold text-ink">Tier</th>
+                      <th className="px-6 py-2.5 font-bold text-ink">Requests / minute</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-line">
-                      <td className="px-6 py-3 font-mono text-ink">Free</td>
-                      <td className="px-6 py-3 font-mono text-ink">10</td>
+                    <tr className="bg-white">
+                      <td className="px-6 py-2.5">
+                        <span className="inline-flex items-center rounded-full bg-ink/8 px-2.5 py-0.5 font-mono text-xs font-medium text-ink-muted">
+                          Free
+                        </span>
+                      </td>
+                      <td className="px-6 py-2.5 font-mono text-ink">10</td>
                     </tr>
-                    <tr>
-                      <td className="px-6 py-3 font-mono text-ink">Paid</td>
-                      <td className="px-6 py-3 font-mono text-ink">60</td>
+                    <tr className="bg-cobalt-tint/40">
+                      <td className="px-6 py-2.5">
+                        <span className="inline-flex items-center rounded-full bg-cobalt-tint px-2.5 py-0.5 font-mono text-xs font-medium text-cobalt">
+                          Paid
+                        </span>
+                      </td>
+                      <td className="px-6 py-2.5 font-mono text-ink">60</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <p className="text-sm text-ink-muted">
-                When you exceed your limit, the API returns <code className="font-mono text-ink">429 Too Many
-                Requests</code> with a <code className="font-mono text-ink">Retry-After</code> header (seconds), and
-                a JSON body:
+                When you exceed your limit, the API returns <HttpStatusBadge status="429 Too Many Requests" /> with a{' '}
+                <code className="font-mono text-ink">Retry-After</code> header (seconds), and a JSON body:
               </p>
               <pre className="overflow-x-auto rounded-md bg-cobalt-tint p-3 font-mono text-xs text-ink">
                 {JSON.stringify({ error: 'Rate limit exceeded', tier: 'Free', limit: 10, retryAfterSeconds: 37 }, null, 2)}

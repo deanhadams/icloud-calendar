@@ -1,6 +1,7 @@
 import { Info } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { DocsHeader } from '../components/DocsHeader'
+import { DocsHeroBand } from '../components/DocsHeroBand'
 import { SetupSlideshow } from '../components/SetupSlideshow'
 import { SETUP_STEPS } from '../components/setupSteps'
 
@@ -8,21 +9,14 @@ export function AppleAppPassword() {
   return (
     <div className="min-h-screen bg-paper">
       <DocsHeader />
+      <DocsHeroBand
+        title="Setting up your Apple app-specific password"
+        subtitle="Syncal connects to iCloud Calendar using an app-specific password — a separate password Apple generates specifically for third-party apps, so your real Apple ID password is never shared with us or stored anywhere. You'll need to generate one before connecting a calendar."
+        backTo="/docs"
+      />
 
       <div className="mx-auto max-w-3xl px-6 py-10">
-        <Link to="/docs" className="text-sm font-medium text-cobalt hover:text-cobalt-hover">
-          ← Back to docs
-        </Link>
-
-        <h1 className="mt-4 text-3xl font-bold text-ink">Setting up your Apple app-specific password</h1>
-
-        <p className="mt-4 text-sm text-ink-muted">
-          Syncal connects to iCloud Calendar using an app-specific password — a separate password Apple
-          generates specifically for third-party apps, so your real Apple ID password is never shared with
-          us or stored anywhere. You'll need to generate one before connecting a calendar.
-        </p>
-
-        <div className="mt-6 flex gap-3 rounded-md border border-signal-amber/30 bg-signal-amber-bg p-4">
+        <div className="flex gap-3 rounded-md border border-signal-amber/30 bg-signal-amber-bg p-4">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-signal-amber" />
           <p className="text-sm text-signal-amber">
             Two-factor authentication must be enabled on your Apple ID before you can generate an
