@@ -10,6 +10,11 @@ interface ModalProps {
   icon?: LucideIcon
   /** Optional supporting line under the title. */
   description?: ReactNode
+  /**
+   * When false the modal stays mounted but is hidden (display: none) and ignores Escape. Lets a
+   * caller keep stateful children — e.g. Google's sign-in iframe — alive between opens.
+   */
+  open?: boolean
 }
 
 export function Modal({
@@ -19,21 +24,23 @@ export function Modal({
   maxWidthClassName = 'max-w-[400px]',
   icon: Icon,
   description,
+  open = true,
 }: ModalProps) {
   const titleId = useId()
   const descriptionId = useId()
 
   useEffect(() => {
+    if (!open) return
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [onClose])
+  }, [onClose, open])
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/60 p-4"
+      className={`fixed inset-0 z-[60] items-center justify-center bg-ink/60 p-4 ${open ? 'flex' : 'hidden'}`}
       onClick={onClose}
     >
       <div
