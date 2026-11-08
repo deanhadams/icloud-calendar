@@ -22,14 +22,14 @@ export const SETUP_STEPS = [
   {
     title: 'Label it',
     description:
-      'Give it a name you\'ll recognize later, e.g. "Syncal" — this makes it easy to identify and revoke later if needed.',
+      'Give it a name you\'ll recognize later, e.g. "iCalSync" — this makes it easy to identify and revoke later if needed.',
   },
   {
     title: 'Copy the generated password',
     description: "Apple shows it once. Copy it immediately; you won't be able to view it again after leaving the page.",
   },
   {
-    title: 'Paste it into Syncal',
-    description: 'Use this password (not your regular Apple ID password) when adding a calendar in the Syncal dashboard.',
+    title: 'Paste it into iCalSync',
+    description: 'Use this password (not your regular Apple ID password) when adding a calendar in the iCalSync dashboard.',
   },
 ]

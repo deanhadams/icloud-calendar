@@ -21,7 +21,7 @@ export function LandingHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <span className="text-lg font-bold text-white">iSyncal</span>
+        <span className="text-lg font-bold text-white">iCalSync</span>
 
         <nav className="flex items-center gap-6">
           <Link to="/docs" className="text-sm font-medium text-paper/70 hover:text-paper">

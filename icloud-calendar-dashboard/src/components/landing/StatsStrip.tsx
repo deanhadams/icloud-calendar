@@ -2,7 +2,7 @@ const STATS = [
   { value: '2.4M+', label: 'Calendar events synced' },
   { value: '99.95%', label: 'API uptime' },
   { value: '180ms', label: 'Median response time' },
-  { value: '600+', label: 'Developers building with iSyncal' },
+  { value: '600+', label: 'Developers building with iCalSync' },
 ]
 
 export function StatsStrip() {

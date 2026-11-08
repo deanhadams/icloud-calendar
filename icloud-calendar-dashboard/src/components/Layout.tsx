@@ -1,3 +1,4 @@
+import { googleLogout } from '@react-oauth/google'
 import type { ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
@@ -12,6 +13,11 @@ export function Layout({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
 
   const handleSignOut = () => {
+    // Tell Google Identity Services the user deliberately signed out, so One Tap's auto_select
+    // won't silently sign them back in the next time the sign-in modal opens. Deliberately not
+    // done in AuthProvider.signOut, which also runs on 401s: an expired session should be able
+    // to re-authenticate automatically.
+    googleLogout()
     signOut()
     navigate('/', { replace: true })
   }

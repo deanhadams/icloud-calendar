@@ -7,8 +7,8 @@ export function QuickstartWalkthrough() {
   return (
     <div className="min-h-screen bg-paper">
       <PageMeta
-        title="Quickstart: implementing Syncal in code | Syncal"
-        description="See how to register a calendar, fetch events, and create events using the Syncal API."
+        title="Quickstart: implementing iCalSync in code | iCalSync"
+        description="See how to register a calendar, fetch events, and create events using the iCalSync API."
         path="/docs/quickstart-walkthrough"
       />
       <DocsHeader />

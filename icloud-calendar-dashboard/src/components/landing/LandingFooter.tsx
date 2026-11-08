@@ -7,7 +7,7 @@ export function LandingFooter() {
   return (
     <footer className="bg-ink">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 border-t border-white/10 px-6 py-10 sm:flex-row sm:items-center">
-        <span className="text-base font-bold text-white">iSyncal</span>
+        <span className="text-base font-bold text-white">iCalSync</span>
 
         <nav className="flex items-center gap-6">
           <Link to="/docs" className="text-sm text-paper/60 hover:text-paper">
@@ -18,7 +18,7 @@ export function LandingFooter() {
           </button>
         </nav>
 
-        <p className="text-sm text-paper/40">&copy; {new Date().getFullYear()} iSyncal.</p>
+        <p className="text-sm text-paper/40">&copy; {new Date().getFullYear()} iCalSync.</p>
       </div>
     </footer>
   )

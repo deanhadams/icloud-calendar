@@ -565,8 +565,8 @@ export function Docs() {
   return (
     <div className="min-h-screen bg-paper">
       <PageMeta
-        title="Documentation | Syncal"
-        description="Full API reference, authentication, quickstart, and error handling for the Syncal iCloud Calendar API."
+        title="Documentation | iCalSync"
+        description="Full API reference, authentication, quickstart, and error handling for the iCalSync iCloud Calendar API."
         path="/docs"
       />
       <DocsHeader />
@@ -582,7 +582,7 @@ export function Docs() {
           <main className="min-w-0 space-y-16 pb-24">
             <Section id="introduction" title="Introduction">
               <p className="text-sm text-ink-muted">
-                The iSyncal API lets you connect a user's iCloud Calendar to your application and read or write
+                The iCalSync API lets you connect a user's iCloud Calendar to your application and read or write
                 events on it, without implementing CalDAV — iCloud's XML-based calendar protocol — yourself. It's
                 built for developers who need to sync appointments, bookings, or schedules with a user's iCloud
                 account from their own backend.

@@ -7,9 +7,9 @@ import { PageMeta } from '../components/PageMeta'
 import { SetupSlideshow } from '../components/SetupSlideshow'
 import { SETUP_STEPS } from '../components/setupSteps'
 
-const TITLE = 'Setting up your Apple app-specific password | Syncal'
+const TITLE = 'Setting up your Apple app-specific password | iCalSync'
 const DESCRIPTION =
-  'Step-by-step guide to generating an Apple app-specific password to connect a calendar to Syncal.'
+  'Step-by-step guide to generating an Apple app-specific password to connect a calendar to iCalSync.'
 
 const HOW_TO_JSON_LD = {
   '@context': 'https://schema.org',
@@ -30,7 +30,7 @@ export function AppleAppPassword() {
       <DocsHeader />
       <DocsHeroBand
         title="Setting up your Apple app-specific password"
-        subtitle="Syncal connects to iCloud Calendar using an app-specific password — a separate password Apple generates specifically for third-party apps, so your real Apple ID password is never shared with us or stored anywhere. You'll need to generate one before connecting a calendar."
+        subtitle="iCalSync connects to iCloud Calendar using an app-specific password — a separate password Apple generates specifically for third-party apps, so your real Apple ID password is never shared with us or stored anywhere. You'll need to generate one before connecting a calendar."
         backTo="/docs"
       />
 

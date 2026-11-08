@@ -13,7 +13,7 @@ const DESCRIPTION =
 const SOFTWARE_APPLICATION_JSON_LD = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'Syncal',
+  name: 'iCalSync',
   description: DESCRIPTION,
   applicationCategory: 'DeveloperApplication',
 }
@@ -21,7 +21,7 @@ const SOFTWARE_APPLICATION_JSON_LD = {
 export function Landing() {
   return (
     <div>
-      <PageMeta title="Syncal — iCloud Calendar API for developers" description={DESCRIPTION} path="/" />
+      <PageMeta title="iCalSync — iCloud Calendar API for developers" description={DESCRIPTION} path="/" />
       <JsonLd data={SOFTWARE_APPLICATION_JSON_LD} />
       <LandingHeader />
       <Hero />

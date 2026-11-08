@@ -11,8 +11,14 @@
   --color-cobalt-tint: #eef1fc;
   --color-cobalt-tint-strong: #e2e7fa;
   --color-violet: #7c5cfc;
+  --color-violet-tint: #e6e0fd;
+  /* Darker violet steps for text on white: #7c5cfc alone is just under 4.5:1. */
+  --color-violet-strong: #6445e8;
+  --color-violet-deep: #4f30cc;
   --color-signal-green: #16a34a;
   --color-signal-green-bg: #dcfce7;
+  --color-signal-green-strong: #15803d;
+  --color-signal-green-deep: #166534;
   --color-signal-amber: #ca8a04;
   --color-signal-amber-bg: #fef3c7;
   --color-signal-red: #dc2626;
@@ -51,6 +57,18 @@ body {
     linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 32px 32px;
+}
+
+/*
+ * Floating dialog surface. A lighter paper (white washing into paper) so it lifts off the dark
+ * backdrop, plus the one soft, diffuse shadow on the site — reserved for overlays.
+ */
+.modal-panel {
+  background: linear-gradient(to bottom, #f7f8fc, var(--color-paper) 140%);
+  box-shadow:
+    0 1px 2px rgba(11, 13, 18, 0.08),
+    0 12px 32px -8px rgba(11, 13, 18, 0.28),
+    0 32px 64px -24px rgba(46, 75, 219, 0.18);
 }
 
 /* Contained cobalt/violet glow behind the hero headline — not a full-bleed wash. */

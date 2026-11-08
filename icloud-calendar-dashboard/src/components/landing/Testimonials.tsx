@@ -8,7 +8,7 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "We tried wrapping libical ourselves for two weeks before finding iSyncal. Swapping in the REST client took an afternoon, and we haven't touched CalDAV since.",
+      "We tried wrapping libical ourselves for two weeks before finding iCalSync. Swapping in the REST client took an afternoon, and we haven't touched CalDAV since.",
     name: 'Priya N.',
     role: 'Founder, scheduling startup',
     initial: 'P',

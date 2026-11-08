@@ -97,7 +97,7 @@ const ILLUSTRATIONS: ReactNode[] = [
     <div className="w-48 rounded-md border border-line bg-white p-3 shadow-sm">
       <p className="mb-1.5 text-[11px] font-semibold text-ink">Password Label</p>
       <div className="rounded border border-cobalt bg-cobalt-tint px-2 py-1.5 font-mono text-[11px] text-ink">
-        Syncal
+        iCalSync
       </div>
       <div className="mt-2.5 flex justify-end gap-2">
         <span className="rounded border border-line px-2 py-1 text-[10px] text-ink-muted">Cancel</span>
@@ -109,7 +109,7 @@ const ILLUSTRATIONS: ReactNode[] = [
   // 6. Copy the generated password
   <div className="flex h-full items-center justify-center">
     <div className="w-52 rounded-md border border-line bg-white p-3 text-center shadow-sm">
-      <p className="mb-1.5 text-[11px] font-semibold text-ink">Syncal</p>
+      <p className="mb-1.5 text-[11px] font-semibold text-ink">iCalSync</p>
       <div className="flex items-center justify-between gap-2 rounded border border-line bg-paper px-2 py-1.5">
         <span className="font-mono text-[11px] text-ink">abcd-efgh-ijkl-mnop</span>
         <Copy className="h-3.5 w-3.5 shrink-0 text-cobalt" />
@@ -118,7 +118,7 @@ const ILLUSTRATIONS: ReactNode[] = [
     </div>
   </div>,
 
-  // 7. Paste it into Syncal
+  // 7. Paste it into iCalSync
   <div className="flex h-full flex-col items-center justify-center gap-2">
     <p className="text-xs font-semibold text-ink">Add a calendar</p>
     <div className="w-48 space-y-1.5">
@@ -140,7 +140,7 @@ const ADDRESS_LABELS = [
   'https://account.apple.com/sign-in',
   'https://account.apple.com/sign-in',
   'https://account.apple.com/sign-in',
-  'Syncal',
+  'iCalSync',
 ]
 
 const SLIDES = SETUP_STEPS.map((step, index) => ({
