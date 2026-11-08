@@ -15,6 +15,11 @@ interface ModalProps {
    * caller keep stateful children — e.g. Google's sign-in iframe — alive between opens.
    */
   open?: boolean
+  /**
+   * When false, the X button, backdrop click and Escape can't close the modal — e.g. while a
+   * request is in flight whose result would otherwise be lost.
+   */
+  dismissible?: boolean
 }
 
 export function Modal({
@@ -25,23 +30,24 @@ export function Modal({
   icon: Icon,
   description,
   open = true,
+  dismissible = true,
 }: ModalProps) {
   const titleId = useId()
   const descriptionId = useId()
 
   useEffect(() => {
-    if (!open) return
+    if (!open || !dismissible) return
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [onClose, open])
+  }, [onClose, open, dismissible])
 
   return (
     <div
       className={`fixed inset-0 z-[60] items-center justify-center bg-ink/60 p-4 ${open ? 'flex' : 'hidden'}`}
-      onClick={onClose}
+      onClick={dismissible ? onClose : undefined}
     >
       <div
         role="dialog"
@@ -63,8 +69,9 @@ export function Modal({
           <button
             type="button"
             onClick={onClose}
+            disabled={!dismissible}
             aria-label="Close"
-            className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-ink/[0.07] hover:text-ink focus-visible:bg-ink/[0.07] focus-visible:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt"
+            className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-ink-muted transition-colors duration-150 hover:bg-ink/[0.07] hover:text-ink focus-visible:bg-ink/[0.07] focus-visible:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink-muted"
           >
             <X className="h-[18px] w-[18px]" aria-hidden="true" />
           </button>
