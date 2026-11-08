@@ -76,18 +76,15 @@ export function SignInModal() {
         </div>
         <div className="absolute inset-0 flex items-center justify-center opacity-0 [&>div]:scale-y-[1.1]">
           {/*
-            useOneTap + auto_select: a returning user with exactly one consented Google session is
-            signed in without the account chooser. The One Tap prompt fires when this component
-            mounts, and SignInModal renders nothing while closed — so it only ever fires after the
-            user has clicked to open the modal, never on page load. Keep One Tap here; don't move
-            it to an always-mounted component. Explicit sign-out calls googleLogout() (Layout.tsx)
-            so auto_select can't immediately sign the user back in.
+            Button flow only — no One Tap / auto_select. FedCM is explicitly disabled for the
+            button so a user who has dismissed a FedCM prompt (which Chrome then blocks) can still
+            sign in through the classic Google popup. Don't re-enable One Tap without revisiting
+            that lockout.
           */}
           <GoogleLogin
             onSuccess={(response) => handleSuccess(response.credential)}
             onError={() => setError('Google sign-in failed. Please try again.')}
-            useOneTap
-            auto_select
+            use_fedcm_for_button={false}
             size="large"
             width="400"
           />
